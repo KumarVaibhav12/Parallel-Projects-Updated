@@ -1,0 +1,61 @@
+package com.cg.dao;
+
+ 
+
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+ 
+
+import com.cg.services.ActivityServices;
+
+ 
+
+import junit.framework.Assert;
+
+ 
+
+public class ActivityDaoTest {
+
+ 
+
+    ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+    ActivityServices services = context.getBean("services", ActivityServices.class);
+
+ 
+
+    
+    
+    long expRes, actRes;
+
+ 
+
+    /*
+     *     Account for Richika with mobile number must be created before
+     * 
+     * amount is deposited 20 and the balance is updated
+     */
+    
+    @Test
+    public void checkShowBalance() {
+        expRes=services.getAccountServices("RICH9090442922").getBalance()+20;
+        
+        boolean res=services.depositServices("RICH9090442922", 20);
+        
+        actRes=services.getAccountServices("RICH9090442922").getBalance();
+    
+        Assert.assertEquals(expRes, actRes);
+        
+        // Balance is restored again to previous balance
+        services.withdrawServices("RICH9090442922", 20);
+
+ 
+
+    }
+    
+    
+    
+    
+}
+ 
